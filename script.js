@@ -125,7 +125,7 @@ function dequeueCount() {
 
     for (let i = 0; i < Object.keys(tests).length; i++) {
       const momentTotal = totalResults.map(result => result.tests[i].moment).reduce((a, b) => a + b);
-      const datejsTotal = totalResults.map(result => result.tests[i].moment).reduce((a, b) => a + b);
+      const datejsTotal = totalResults.map(result => result.tests[i].datejs).reduce((a, b) => a + b);
 
       const momentAverage = Math.round(momentTotal / totalResults.length);
       const datejsAverage = Math.round(datejsTotal / totalResults.length);
