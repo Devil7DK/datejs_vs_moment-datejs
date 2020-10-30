@@ -163,17 +163,19 @@ function triggerTest() {
 }
 
 function compareResults(result1, result2) {
+  let testName = Object.keys(tests)[currentTest];
+
   let testResult = true;
   for (let i = 0; i < result1.length; i++) {
     if (result1[i] == null || !result2[i] == null) {
-      console.error(`Test Failed! a=${result1[i]} b=${result2[i]}`);
+      console.error(`${testName}Test Failed! a=${result1[i]} b=${result2[i]}`);
       testResult = false;
       break;
     }
 
     if (typeof result1[i] == "object") {
       if (result1[i].getTime() != result2[i].getTime()) {
-        console.error(`Test Failed!`);
+        console.error(`${testName} Test Failed!`);
         console.log(result1[i]);
         console.log(result2[i]);
         testResult = false;
@@ -181,7 +183,7 @@ function compareResults(result1, result2) {
       }
     } else if (typeof result1[i] == "number") {
       if (result1[i] != result2[i]) {
-        console.error(`Test Failed! a=${result1[i]} b=${result2[i]}`);
+        console.error(`${testName} Test Failed! a=${result1[i]} b=${result2[i]}`);
         testResult = false;
         break;
       }
