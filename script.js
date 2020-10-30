@@ -560,21 +560,18 @@ function testAddMilliseconds() {
 }
 
 function testAdd() {
-  const from = ~~(currentCount / 3) * -1;
-  const to = currentCount + from;
-
   const momentToday = momentDateJs.today();
   const startTimeMomentDatejs = Date.now();
-  for (let i = from; i <= to; i++) {
+  for (let i = 0, j = -9; i < currentCount; i++, j == 9 ? j = -9 : j++) {
     momentToday.add({
-      days: Math.min(10000, i),
-      weeks: Math.min(5000, i),
-      months: Math.min(1000, i),
-      years: Math.min(100, i),
-      hours: Math.min(10000, i),
-      minutes: Math.min(100000, i),
-      seconds: Math.min(1000000, i),
-      milliseconds: Math.min(100000, i)
+      days: j,
+      weeks: j,
+      months: j,
+      years: j,
+      hours: j * 2,
+      minutes: j * 11,
+      seconds: j * 111,
+      milliseconds: j * 1111
     });
   }
   const endTimeMomentDatejs = Date.now();
@@ -583,16 +580,16 @@ function testAdd() {
   requestAnimationFrame(() => {
     const datejsToday = dateJs.today();
     const startTimeDatejs = Date.now();
-    for (let i = from; i <= to; i++) {
+    for (let i = 0, j = -9; i < currentCount; i++, j == 9 ? j = -9 : j++) {
       datejsToday.add({
-        days: Math.min(10000, i),
-        weeks: Math.min(5000, i),
-        months: Math.min(1000, i),
-        years: Math.min(100, i),
-        hours: Math.min(10000, i),
-        minutes: Math.min(100000, i),
-        seconds: Math.min(1000000, i),
-        milliseconds: Math.min(100000, i)
+        days: j,
+        weeks: j,
+        months: j,
+        years: j,
+        hours: j * 2,
+        minutes: j * 11,
+        seconds: j * 111,
+        milliseconds: j * 1111
       });
     }
     const endTimeDatejs = Date.now();
