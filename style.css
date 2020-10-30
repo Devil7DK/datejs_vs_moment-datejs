@@ -1,0 +1,38 @@
+td>input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+iframe {
+  display: none;
+}
+
+#result {
+  background-color: #fff;
+}
+
+#result, #result td {
+  border-collapse: collapse;
+  border: 1px solid #000;
+}
+
+#result td {
+  padding: 5px;
+}
+
+#result>thead {
+  background: #23c2ff;
+  text-align: center;
+}
+
+#result>tbody>tr>td:nth-last-of-type(-n+2) {
+  background: #23c2ff;
+}
+
+#result>tfoot {
+  background: #ccc;
+}
+
+#result>tfoot>tr>td:nth-last-of-type(-n+2) {
+  background: #54A3C2;
+}

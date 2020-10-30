@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Date.js vs Custom Wrapper Using Moment.js</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <iframe id="dateJsFrame" src="datejs.html">
+  </iframe>
+  <iframe id="momentDateJsFrame" src="moment-datejs.html">
+  </iframe>
+  <table>
+    <colgroup>
+      <col style="width: 100px;" />
+      <col style="width: 10px;" />
+      <col style="width: 150px;" />
+      <col />
+    </colgroup>
+    <tr>
+      <td><label for="countStart">Starting Count</label></td>
+      <td>:</td>
+      <td><input id="countStart" type="number" value="1000" /></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><label for="countEnd">End Count</label></td>
+      <td>:</td>
+      <td><input id="countEnd" type="number" value="15000" /></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><label for="countStep">Step Count</label></td>
+      <td>:</td>
+      <td><input id="countStep" type="number" value="1000" /></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <button id="btnStart" onclick="runTests()" style="float:right;">Start</button>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><label for="result">Result</label></td>
+      <td style="vertical-align: top;">:</td>
+      <td colspan="2">
+        <div id='resultContainer'>
+          <table id="result">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+          </table>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>
+        <button id="btnDownload" onclick="downloadImage()" style="display: none;">Save Image</button>
+      </td>
+      <td></td>
+    </tr>
+  </table>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+  <script src="./script.js"></script>
+</body>
+
+</html>
