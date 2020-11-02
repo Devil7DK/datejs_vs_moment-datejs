@@ -70,14 +70,28 @@ Date.prototype.addMilliseconds = function (value) {
 };
 
 Date.prototype.add = function (config) {
-    var momentValue = moment(this.clone());
-
-    for (var prop in config) {
-        if (config.hasOwnProperty(prop))
-            momentValue.add(config[prop], prop);
+    if (config.millisecond || config.milliseconds) {
+        this.addMilliseconds(config.millisecond || config.milliseconds);
+    }
+    if (config.second || config.seconds) {
+        this.addSeconds(config.second || config.seconds);
+    }
+    if (config.minute || config.minutes) {
+        this.addMinutes(config.minute || config.minutes);
+    }
+    if (config.hour || config.hours) {
+        this.addHours(config.hour || config.hours);
+    }
+    if (config.month || config.months) {
+        this.addMonths(config.month || config.months);
+    }
+    if (config.year || config.years) {
+        this.addYears(config.year || config.years);
+    }
+    if (config.day || config.days) {
+        this.addDays(config.day || config.days);
     }
 
-    this.setTime(momentValue.valueOf());
     return this;
 };
 
@@ -143,7 +157,13 @@ Date.prototype.toString = function (format) {
 
 Date.prototype.moveToDayOfWeek = function (day, orient) {
     var momentValue = moment(this.clone()).isoWeekday(day);
-    this.setTime(orient >= 0 ? momentValue.add(1, "week").valueOf() : momentValue.valueOf())
+    if (orient >= 0 && momentValue.valueOf() < this.getTime()) {
+        this.setTime(momentValue.add(1, "week").valueOf());
+    } else if (orient < 0 && momentValue.valueOf() > this.getTime()) {
+        this.setTime(momentValue.add(-1, "week").valueOf());
+    } else {
+        this.setTime(momentValue.valueOf())
+    }
     return this;
 };
 

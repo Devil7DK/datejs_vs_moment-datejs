@@ -167,26 +167,40 @@ function compareResults(result1, result2) {
 
   let testResult = true;
   for (let i = 0; i < result1.length; i++) {
-    if (result1[i] == null || !result2[i] == null) {
-      console.error(`${testName}Test Failed! a=${result1[i]} b=${result2[i]}`);
+    if (result1[i] == null || result2[i] == null) {
+      console.error(`${testName}Test Failed! datejs=${result1[i]} moment=${result2[i]}`);
       testResult = false;
       break;
     }
 
-    if (typeof result1[i] == "object") {
+    if (result1[i] instanceof dateJs && result2[i] instanceof momentDateJs) {
       if (result1[i].getTime() != result2[i].getTime()) {
-        console.error(`${testName} Test Failed!`);
-        console.log(result1[i]);
-        console.log(result2[i]);
+        console.error(`${testName} Test Failed! datejs=${result1[i].toString()} moment=${result2[i].toString()}`);
         testResult = false;
         break;
       }
-    } else if (typeof result1[i] == "number") {
+    } else if (result1[i]['output'] instanceof dateJs && result2[i]['output'] instanceof momentDateJs) {
+      if (result1[i]['output'].getTime() != result2[i]['output'].getTime()) {
+        console.error(`${testName} Test Failed! datejs@${result1[i]['input']}=${result1[i]['output'].toString()} moment@${result2[i]['input']}=${result2[i]['output'].toString()}`);
+        testResult = false;
+        break;
+      }
+    } else if ((typeof result1[i] == "number" && typeof result2[i] == "number") || (typeof result1[i] == "string" && typeof result2[i] == "string")) {
       if (result1[i] != result2[i]) {
-        console.error(`${testName} Test Failed! a=${result1[i]} b=${result2[i]}`);
+        console.error(`${testName} Test Failed! datejs=${result1[i]} moment=${result2[i]}`);
         testResult = false;
         break;
       }
+    } else if ((typeof result1[i]['output'] == "number" && typeof result2[i]['output'] == "number") || (typeof result1[i]['output'] == "string" && typeof result2[i]['output'] == "string")) {
+      if (result1[i]['output'] != result2[i]['output']) {
+        console.error(`${testName} Test Failed! datejs@${result1[i]['input']}=${result1[i]['output']} moment@${result2[i]['input']}=${result2[i]['output']}`);
+        testResult = false;
+        break;
+      }
+    } else {
+      console.error(`${testName} Test Failed! Unknown type!`);
+      testResult = false;
+      break;
     }
   }
 
@@ -344,13 +358,10 @@ function testToday() {
 }
 
 function testAddDays() {
-  const from = ~~(currentCount / 3) * -1;
-  const to = currentCount + from;
-
   const momentToday = momentDateJs.today();
   const startTimeMomentDatejs = Date.now();
-  for (let i = from; i <= to; i++) {
-    momentToday.addDays(i);
+  for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+    momentToday.addDays(j);
   }
   const endTimeMomentDatejs = Date.now();
   addCell(endTimeMomentDatejs - startTimeMomentDatejs);
@@ -358,8 +369,8 @@ function testAddDays() {
   requestAnimationFrame(() => {
     const datejsToday = dateJs.today();
     const startTimeDatejs = Date.now();
-    for (let i = from; i <= to; i++) {
-      datejsToday.addDays(i);
+    for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+      datejsToday.addDays(j);
     }
     const endTimeDatejs = Date.now();
     addCell(endTimeDatejs - startTimeDatejs);
@@ -371,13 +382,10 @@ function testAddDays() {
 }
 
 function testAddWeeks() {
-  const from = ~~(currentCount / 3) * -1;
-  const to = currentCount + from;
-
   const momentToday = momentDateJs.today();
   const startTimeMomentDatejs = Date.now();
-  for (let i = from; i <= to; i++) {
-    momentToday.addWeeks(i);
+  for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+    momentToday.addWeeks(j);
   }
   const endTimeMomentDatejs = Date.now();
   addCell(endTimeMomentDatejs - startTimeMomentDatejs);
@@ -385,8 +393,8 @@ function testAddWeeks() {
   requestAnimationFrame(() => {
     const datejsToday = dateJs.today();
     const startTimeDatejs = Date.now();
-    for (let i = from; i <= to; i++) {
-      datejsToday.addWeeks(i);
+    for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+      datejsToday.addWeeks(j);
     }
     const endTimeDatejs = Date.now();
     addCell(endTimeDatejs - startTimeDatejs);
@@ -398,13 +406,10 @@ function testAddWeeks() {
 }
 
 function testAddMonths() {
-  const from = ~~(currentCount / 3) * -1;
-  const to = currentCount + from;
-
   const momentToday = momentDateJs.today();
   const startTimeMomentDatejs = Date.now();
-  for (let i = from; i <= to; i++) {
-    momentToday.addMonths(i);
+  for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+    momentToday.addMonths(j);
   }
   const endTimeMomentDatejs = Date.now();
   addCell(endTimeMomentDatejs - startTimeMomentDatejs);
@@ -412,8 +417,8 @@ function testAddMonths() {
   requestAnimationFrame(() => {
     const datejsToday = dateJs.today();
     const startTimeDatejs = Date.now();
-    for (let i = from; i <= to; i++) {
-      datejsToday.addMonths(i);
+    for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+      datejsToday.addMonths(j);
     }
     const endTimeDatejs = Date.now();
     addCell(endTimeDatejs - startTimeDatejs);
@@ -425,40 +430,36 @@ function testAddMonths() {
 }
 
 function testAddYears() {
-  const from = ~~(currentCount / 3) * -1;
-  const to = currentCount + from;
-
+  const momentjsResult = [];
   const momentToday = momentDateJs.today();
   const startTimeMomentDatejs = Date.now();
-  for (let i = from; i <= to; i++) {
-    momentToday.addYears(i);
+  for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+    momentjsResult.push({ input: j, output: momentToday.addYears(j).clone() });
   }
   const endTimeMomentDatejs = Date.now();
   addCell(endTimeMomentDatejs - startTimeMomentDatejs);
 
   requestAnimationFrame(() => {
+    const datejsResult = [];
     const datejsToday = dateJs.today();
     const startTimeDatejs = Date.now();
-    for (let i = from; i <= to; i++) {
-      datejsToday.addYears(i);
+    for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+      datejsResult.push({ input: j, output: datejsToday.addYears(j).clone() });
     }
     const endTimeDatejs = Date.now();
     addCell(endTimeDatejs - startTimeDatejs);
 
     totalResults.find(item => item.count == currentCount).tests[currentTest] = { moment: endTimeMomentDatejs - startTimeMomentDatejs, datejs: endTimeDatejs - startTimeDatejs }
 
-    requestAnimationFrame(() => compareResults([datejsToday], [momentToday]));
+    requestAnimationFrame(() => compareResults(datejsResult, momentjsResult));
   });
 }
 
 function testAddHours() {
-  const from = ~~(currentCount / 3) * -1;
-  const to = currentCount + from;
-
   const momentToday = momentDateJs.today();
   const startTimeMomentDatejs = Date.now();
-  for (let i = from; i <= to; i++) {
-    momentToday.addHours(i);
+  for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+    momentToday.addHours(j);
   }
   const endTimeMomentDatejs = Date.now();
   addCell(endTimeMomentDatejs - startTimeMomentDatejs);
@@ -466,8 +467,8 @@ function testAddHours() {
   requestAnimationFrame(() => {
     const datejsToday = dateJs.today();
     const startTimeDatejs = Date.now();
-    for (let i = from; i <= to; i++) {
-      datejsToday.addHours(i);
+    for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+      datejsToday.addHours(j);
     }
     const endTimeDatejs = Date.now();
     addCell(endTimeDatejs - startTimeDatejs);
@@ -479,13 +480,10 @@ function testAddHours() {
 }
 
 function testAddMinutes() {
-  const from = ~~(currentCount / 3) * -1;
-  const to = currentCount + from;
-
   const momentToday = momentDateJs.today();
   const startTimeMomentDatejs = Date.now();
-  for (let i = from; i <= to; i++) {
-    momentToday.addMinutes(i);
+  for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+    momentToday.addMinutes(j);
   }
   const endTimeMomentDatejs = Date.now();
   addCell(endTimeMomentDatejs - startTimeMomentDatejs);
@@ -493,8 +491,8 @@ function testAddMinutes() {
   requestAnimationFrame(() => {
     const datejsToday = dateJs.today();
     const startTimeDatejs = Date.now();
-    for (let i = from; i <= to; i++) {
-      datejsToday.addMinutes(i);
+    for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+      datejsToday.addMinutes(j);
     }
     const endTimeDatejs = Date.now();
     addCell(endTimeDatejs - startTimeDatejs);
@@ -506,13 +504,10 @@ function testAddMinutes() {
 }
 
 function testAddSeconds() {
-  const from = ~~(currentCount / 3) * -1;
-  const to = currentCount + from;
-
   const momentToday = momentDateJs.today();
   const startTimeMomentDatejs = Date.now();
-  for (let i = from; i <= to; i++) {
-    momentToday.addSeconds(i);
+  for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+    momentToday.addSeconds(j);
   }
   const endTimeMomentDatejs = Date.now();
   addCell(endTimeMomentDatejs - startTimeMomentDatejs);
@@ -520,8 +515,8 @@ function testAddSeconds() {
   requestAnimationFrame(() => {
     const datejsToday = dateJs.today();
     const startTimeDatejs = Date.now();
-    for (let i = from; i <= to; i++) {
-      datejsToday.addSeconds(i);
+    for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+      datejsToday.addSeconds(j);
     }
     const endTimeDatejs = Date.now();
     addCell(endTimeDatejs - startTimeDatejs);
@@ -533,13 +528,10 @@ function testAddSeconds() {
 }
 
 function testAddMilliseconds() {
-  const from = ~~(currentCount / 3) * -1;
-  const to = currentCount + from;
-
   const momentToday = momentDateJs.today();
   const startTimeMomentDatejs = Date.now();
-  for (let i = from; i <= to; i++) {
-    momentToday.addMilliseconds(i);
+  for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+    momentToday.addMilliseconds(j * 100);
   }
   const endTimeMomentDatejs = Date.now();
   addCell(endTimeMomentDatejs - startTimeMomentDatejs);
@@ -547,8 +539,8 @@ function testAddMilliseconds() {
   requestAnimationFrame(() => {
     const datejsToday = dateJs.today();
     const startTimeDatejs = Date.now();
-    for (let i = from; i <= to; i++) {
-      datejsToday.addMilliseconds(i);
+    for (let i = 0, j = -5; i < currentCount; i++, j == 9 ? j = -5 : j++) {
+      datejsToday.addMilliseconds(j * 100);
     }
     const endTimeDatejs = Date.now();
     addCell(endTimeDatejs - startTimeDatejs);
@@ -560,28 +552,12 @@ function testAddMilliseconds() {
 }
 
 function testAdd() {
+  const momentjsResult = [];
   const momentToday = momentDateJs.today();
   const startTimeMomentDatejs = Date.now();
-  for (let i = 0, j = -9; i < currentCount; i++, j == 9 ? j = -9 : j++) {
-    momentToday.add({
-      days: j,
-      weeks: j,
-      months: j,
-      years: j,
-      hours: j * 2,
-      minutes: j * 11,
-      seconds: j * 111,
-      milliseconds: j * 1111
-    });
-  }
-  const endTimeMomentDatejs = Date.now();
-  addCell(endTimeMomentDatejs - startTimeMomentDatejs);
-
-  requestAnimationFrame(() => {
-    const datejsToday = dateJs.today();
-    const startTimeDatejs = Date.now();
-    for (let i = 0, j = -9; i < currentCount; i++, j == 9 ? j = -9 : j++) {
-      datejsToday.add({
+  for (let i = 0, j = -4; i < currentCount; i++, j == 9 ? j = -4 : j++) {
+    momentjsResult.push({
+      input: j, output: momentToday.add({
         days: j,
         weeks: j,
         months: j,
@@ -590,6 +566,28 @@ function testAdd() {
         minutes: j * 11,
         seconds: j * 111,
         milliseconds: j * 1111
+      }).clone()
+    });
+  }
+  const endTimeMomentDatejs = Date.now();
+  addCell(endTimeMomentDatejs - startTimeMomentDatejs);
+
+  requestAnimationFrame(() => {
+    const datejsResult = [];
+    const datejsToday = dateJs.today();
+    const startTimeDatejs = Date.now();
+    for (let i = 0, j = -4; i < currentCount; i++, j == 9 ? j = -4 : j++) {
+      datejsResult.push({
+        input: j, output: datejsToday.add({
+          days: j,
+          weeks: j,
+          months: j,
+          years: j,
+          hours: j * 2,
+          minutes: j * 11,
+          seconds: j * 111,
+          milliseconds: j * 1111
+        }).clone()
       });
     }
     const endTimeDatejs = Date.now();
@@ -597,36 +595,38 @@ function testAdd() {
 
     totalResults.find(item => item.count == currentCount).tests[currentTest] = { moment: endTimeMomentDatejs - startTimeMomentDatejs, datejs: endTimeDatejs - startTimeDatejs };
 
-    requestAnimationFrame(() => compareResults([datejsToday], [momentToday]));
+    requestAnimationFrame(() => compareResults(datejsResult, momentjsResult));
   });
 }
 
 function testMoveToDayOfWeek() {
+  const momentjsResult = [];
   const momentToday = momentDateJs.today();
   const startTimeMomentDatejs = Date.now();
   for (let i = 0, j = 0, k = -1; i < currentCount; i++, j == 6 ? j = 0 : j++, k == 1 ? k = -1 : k++) {
-    momentToday.moveToDayOfWeek(j, k);
+    momentjsResult.push({ input: `${j} ${k}`, output: momentToday.moveToDayOfWeek(j, k).clone() });
   }
   const endTimeMomentDatejs = Date.now();
   addCell(endTimeMomentDatejs - startTimeMomentDatejs);
 
   requestAnimationFrame(() => {
+    const datejsResult = [];
     const datejsToday = dateJs.today();
     const startTimeDatejs = Date.now();
     for (let i = 0, j = 0, k = -1; i < currentCount; i++, j == 6 ? j = 0 : j++, k == 1 ? k = -1 : k++) {
-      datejsToday.moveToDayOfWeek(j, k);
+      datejsResult.push({ input: `${j} ${k}`, output: datejsToday.moveToDayOfWeek(j, k).clone() });
     }
     const endTimeDatejs = Date.now();
     addCell(endTimeDatejs - startTimeDatejs);
 
     totalResults.find(item => item.count == currentCount).tests[currentTest] = { moment: endTimeMomentDatejs - startTimeMomentDatejs, datejs: endTimeDatejs - startTimeDatejs };
 
-    requestAnimationFrame(() => compareResults([datejsToday], [momentToday]));
+    requestAnimationFrame(() => compareResults(datejsResult, momentjsResult));
   });
 }
 
 function testToString() {
-  const testFormats = ["dd-MMM-yyyy", "d-MMM-yyyy", "HH", "htt", "mm", "MM/dd/yyyy", "MMMM dd yyyy", "MMMM yyyy", "yyyy", "yyyy-M-d", "yyyy-MM-dd HH:mm", "yyyy-MM-ddTHH:mm:ss"];
+  const testFormats = ["dd-MMM-yyyy", "d-MMM-yyyy", "HH", "mm", "MM/dd/yyyy", "MMMM dd yyyy", "MMMM yyyy", "yyyy", "yyyy-M-d", "yyyy-MM-dd HH:mm", "yyyy-MM-ddTHH:mm:ss"];
 
   const dayFormats = [];
   for (let i = 0, j = 0; i < currentCount; i++, j == testFormats.length - 1 ? j = 0 : j++) {
@@ -641,7 +641,7 @@ function testToString() {
   const resultsMomentDatejs = [];
   const startTimeMomentDatejs = Date.now();
   for (let i = 0; i < dateArrayMoment.length; i++) {
-    resultsMomentDatejs.push(dateArrayMoment[i].toString(dayFormats[i]));
+    resultsMomentDatejs.push({ input: `${dayFormats[i]}, ${dateArrayMoment[i].toString()}`, output: dateArrayMoment[i].toString(dayFormats[i]) });
   }
   const endTimeMomentDatejs = Date.now();
   addCell(endTimeMomentDatejs - startTimeMomentDatejs);
@@ -655,7 +655,7 @@ function testToString() {
     const resultsDatejs = [];
     const startTimeDatejs = Date.now();
     for (let i = 0; i < dateArrayDatejs.length; i++) {
-      resultsDatejs.push(dateArrayDatejs[i].toString(dayFormats[i]));
+      resultsDatejs.push({ input: `${dayFormats[i]}, ${dateArrayDatejs[i].toString()}`, output: dateArrayDatejs[i].toString(dayFormats[i]) });
     }
     const endTimeDatejs = Date.now();
     addCell(endTimeDatejs - startTimeDatejs);
